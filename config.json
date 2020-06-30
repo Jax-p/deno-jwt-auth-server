@@ -1,0 +1,21 @@
+{
+  "jwtConfig": {
+    "header": "Authorization",
+    "schema": "Bearer",
+    "secretKey": "[!] My Super Secret String [!]",
+    "expirationTime": 60000,
+    "type": "JWT",
+    "alg": "HS256"
+  },
+  "mysqlConfig": {
+    "hostname": "127.0.0.1",
+    "port": 3306,
+    "username": "root",
+    "password": "root",
+    "db": "deno-jwt-auth-server"
+  },
+  "serverConfig": {
+    "hostname": "127.0.0.1",
+    "port": 3001
+  }
+}
