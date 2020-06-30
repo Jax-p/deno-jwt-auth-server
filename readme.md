@@ -1,5 +1,5 @@
 # JWT Auth server
-JWT Auth server written in TypeScript with Deno. Doesn't provide API solution. Used only as a user authenticator and JWT generator.
+Starter JWT Auth server written in TypeScript with Deno. Doesn't provide API solution. Used only as a user authenticator and JWT generator.
 
 ## Usage
 Use `POST` with route `/auth`.  
