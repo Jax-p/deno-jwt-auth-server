@@ -1,4 +1,6 @@
 # JWT Auth server
+[![Build Status](https://travis-ci.com/Jax-p/deno-jwt-auth-server.svg?branch=master)](https://travis-ci.com/Jax-p/deno-jwt-auth-server)   
+
 Starter JWT Auth server written in TypeScript with Deno. Doesn't provide API solution. Used only as a user authenticator and JWT generator.
 
 ## Usage
