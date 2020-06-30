@@ -7,9 +7,11 @@ import { ClientConfig } from "https://deno.land/x/mysql@2.1.0/mod.ts";
  * @param config
  * @param sync
  */
-const connectMySQL = async(config: ClientConfig, sync = false): Promise<void> => {
+export const connectMySQL = async(config: ClientConfig, sync = false): Promise<void> => {
     await dso.connect(config);
     await dso.sync(sync);
 }
 
-export { connectMySQL };
+export const disconnectMySQL = async(): Promise<void> => {
+    await dso.close();
+}

@@ -1,11 +1,13 @@
 import { assertEquals, assertNotEquals } from "https://deno.land/std/testing/asserts.ts";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 import { ModelFields } from "https://deno.land/x/dso@v1.0.0/mod.ts";
-import { connectMySQL } from "../controllers/database/database.ts";
+import {connectMySQL, disconnectMySQL} from "../controllers/database/database.ts";
 import { UserController } from "../controllers/user/UserController.ts";
 import { IUser } from "../controllers/user/IUser.ts";
 import { UserModel } from "../controllers/user/UserModel.ts";
 import { mysqlConfig } from "../controllers/config/config.ts";
+import { Client } from "https://deno.land/x/mysql@2.1.0/mod.ts";
+import { dso } from "https://deno.land/x/dso@v1.0.0/mod.ts";
 
 /** fake user for test */
 const tmpUser: IUser = {
@@ -14,8 +16,26 @@ const tmpUser: IUser = {
     password: "test"
 }
 
+const dbName = "deno_auth_test";
+const prepareDatabase = async() => {
+    const client = new Client();
+    await client.connect(mysqlConfig);
+    await client.execute(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
+    await client.close();
+    console.info("Test database prepared");
+}
+
+const destroyDatabase = async() => {
+    const client = new Client();
+    await client.connect(mysqlConfig);
+    await client.execute(`DROP DATABASE ${dbName}`);
+    await client.close();
+    console.info("Test database dropped");
+}
+
 /** drops whole database! */
-await connectMySQL(mysqlConfig, true);
+await prepareDatabase();
+await connectMySQL({...mysqlConfig, db: dbName}, true);
 const controller = new UserController();
 let user: ModelFields<UserModel>|undefined;
 
@@ -42,4 +62,7 @@ Deno.test("delete user", async () => {
     await controller.delete(user.id);
     user = await controller.get(id);
     assertEquals(user,undefined,"If user has been deleted from database");
+    //await disconnectMySQL();
+    await destroyDatabase();
 });
+
